@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>下班倒计时</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>周末倒计时</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet" />
@@ -22,16 +22,26 @@
       --text-muted:#5a6a82;
       --glow:      rgba(245,197,24,0.35);
       --glow2:     rgba(255,107,53,0.25);
-      --digit-h:   140px;
-      --digit-w:   110px;
+
+      /* ── Fluid digit sizing using clamp ── */
+      --digit-h: clamp(64px, 16vw, 140px);
+      --digit-w: clamp(48px, 12vw, 110px);
+      --digit-fs: clamp(38px, 10vw, 88px);
     }
 
-    html, body {
+    html {
       height: 100%;
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Noto Sans SC', sans-serif;
-      overflow: hidden;
+      /* Allow scroll on very small screens */
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
     /* ─── Noise Overlay ─── */
@@ -61,31 +71,6 @@
       z-index: 998;
     }
 
-    /* ─── Layout ─── */
-    .page {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-      position: relative;
-    }
-
-    /* ─── Corner Decorations ─── */
-    .corner {
-      position: fixed;
-      width: 60px;
-      height: 60px;
-      border-color: var(--dim);
-      border-style: solid;
-      opacity: 0.5;
-    }
-    .corner--tl { top: 20px; left: 20px; border-width: 2px 0 0 2px; }
-    .corner--tr { top: 20px; right: 20px; border-width: 2px 2px 0 0; }
-    .corner--bl { bottom: 20px; left: 20px; border-width: 0 0 2px 2px; }
-    .corner--br { bottom: 20px; right: 20px; border-width: 0 2px 2px 0; }
-
     /* ─── Grid Background ─── */
     .grid-bg {
       position: fixed;
@@ -97,29 +82,58 @@
       pointer-events: none;
     }
 
+    /* ─── Corner Decorations ─── */
+    .corner {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-color: var(--dim);
+      border-style: solid;
+      opacity: 0.4;
+      z-index: 10;
+    }
+    .corner--tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
+    .corner--tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
+    .corner--bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
+    .corner--br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+
+    /* ─── Page Layout ─── */
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: clamp(16px, 4vw, 32px);
+      padding-top: clamp(32px, 6vw, 48px);
+      padding-bottom: clamp(32px, 6vw, 48px);
+      position: relative;
+    }
+
     /* ─── Header ─── */
     .header {
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: clamp(20px, 4vw, 48px);
       animation: fadeDown 0.8s ease both;
+      width: 100%;
     }
 
     .header__eyebrow {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.35em;
+      font-size: clamp(9px, 2.2vw, 11px);
+      letter-spacing: 0.3em;
       color: var(--accent);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
     }
     .header__eyebrow::before,
     .header__eyebrow::after {
       content: '';
-      width: 40px;
+      width: clamp(20px, 5vw, 40px);
       height: 1px;
       background: var(--accent);
       opacity: 0.5;
@@ -127,7 +141,7 @@
 
     .header__title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(36px, 6vw, 72px);
+      font-size: clamp(32px, 9vw, 72px);
       letter-spacing: 0.12em;
       color: #fff;
       line-height: 1;
@@ -135,10 +149,10 @@
     }
 
     .header__sub {
-      font-size: 12px;
+      font-size: clamp(9px, 2.2vw, 12px);
       color: var(--text-muted);
-      letter-spacing: 0.2em;
-      margin-top: 10px;
+      letter-spacing: 0.18em;
+      margin-top: 8px;
       font-weight: 300;
     }
 
@@ -148,19 +162,21 @@
       align-items: center;
       gap: 8px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      padding: 6px 14px;
+      font-size: clamp(9px, 2.2vw, 11px);
+      letter-spacing: 0.12em;
+      padding: 5px 12px;
       border: 1px solid var(--border);
       border-radius: 2px;
-      margin-bottom: 36px;
+      margin-bottom: clamp(16px, 3.5vw, 36px);
       background: rgba(15,19,24,0.8);
       animation: fadeDown 0.8s 0.1s ease both;
+      white-space: nowrap;
     }
 
     .status-dot {
       width: 7px;
       height: 7px;
+      flex-shrink: 0;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
@@ -177,20 +193,22 @@
     .clock-panel {
       background: var(--panel);
       border: 1px solid var(--border);
-      padding: 40px 48px;
+      padding: clamp(16px, 4vw, 40px) clamp(12px, 4vw, 48px);
       position: relative;
       animation: fadeUp 0.9s 0.2s ease both;
       box-shadow:
         0 0 0 1px rgba(245,197,24,0.05),
         0 20px 60px rgba(0,0,0,0.6),
         inset 0 1px 0 rgba(255,255,255,0.04);
+      width: 100%;
+      max-width: 900px;
     }
 
     /* Panel accent line */
     .clock-panel::before {
       content: '';
       position: absolute;
-      top: 0; left: 40px; right: 40px;
+      top: 0; left: 30px; right: 30px;
       height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
       opacity: 0.6;
@@ -200,32 +218,49 @@
     .clock-panel::after {
       content: 'COUNTDOWN SYSTEM v2.1';
       position: absolute;
-      bottom: -1px; right: 20px;
+      bottom: -1px; right: 16px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
+      font-size: 8px;
       letter-spacing: 0.2em;
       color: var(--dim);
       background: var(--panel);
-      padding: 0 8px;
+      padding: 0 6px;
     }
 
-    /* ─── Digit Groups ─── */
+    /* ─── Digit Groups Row ─── */
     .digits-row {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0;
+      flex-wrap: nowrap;
+      width: 100%;
+    }
+
+    /* On very small screens: stack days+time into two rows */
+    .digits-row--stacked {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .digits-row--stacked .digits-top,
+    .digits-row--stacked .digits-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .digit-group {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
     .digit-group__label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
+      font-size: clamp(8px, 2vw, 10px);
       letter-spacing: 0.3em;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -234,7 +269,7 @@
 
     .digit-group__slots {
       display: flex;
-      gap: 4px;
+      gap: clamp(2px, 0.5vw, 4px);
       order: 1;
     }
 
@@ -242,15 +277,16 @@
     .sep {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      padding: 0 16px;
-      padding-bottom: 30px;
+      gap: clamp(10px, 2.5vw, 16px);
+      padding: 0 clamp(6px, 1.5vw, 16px);
+      padding-bottom: clamp(20px, 5vw, 30px);
       align-self: center;
+      flex-shrink: 0;
     }
 
     .sep__dot {
-      width: 6px;
-      height: 6px;
+      width: clamp(4px, 1.2vw, 6px);
+      height: clamp(4px, 1.2vw, 6px);
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 10px var(--glow);
@@ -269,6 +305,15 @@
       box-shadow:
         inset 0 2px 8px rgba(0,0,0,0.8),
         0 0 0 1px rgba(0,0,0,0.5);
+    }
+
+    /* Glow pulse on active slots */
+    .slot:not(.is-zero) {
+      animation: slotGlow 4s ease-in-out infinite;
+    }
+    @keyframes slotGlow {
+      0%, 100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5); }
+      50%       { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 12px rgba(245,197,24,0.12), 0 0 0 1px rgba(245,197,24,0.08); }
     }
 
     /* Slot top/bottom fade masks */
@@ -319,7 +364,7 @@
       align-items: center;
       justify-content: center;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 88px;
+      font-size: var(--digit-fs);
       color: var(--accent);
       text-shadow:
         0 0 20px var(--glow),
@@ -334,21 +379,16 @@
       color: var(--dim);
       text-shadow: none;
     }
-
-    .slot.is-zero::after {
-      opacity: 0;
-    }
+    .slot.is-zero::after { opacity: 0; }
 
     /* ─── Info Bar ─── */
     .info-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 40px;
-      padding-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: clamp(20px, 4vw, 40px);
+      padding-top: clamp(14px, 3vw, 20px);
       border-top: 1px solid var(--border);
-      gap: 24px;
-      flex-wrap: wrap;
       animation: fadeUp 0.9s 0.35s ease both;
     }
 
@@ -360,25 +400,26 @@
 
     .info-item__label {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.3em;
+      font-size: clamp(7px, 1.8vw, 9px);
+      letter-spacing: 0.25em;
       color: var(--text-muted);
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .info-item__value {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
+      font-size: clamp(11px, 2.8vw, 13px);
       color: var(--text);
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
     }
 
-    .info-item__value.accent { color: var(--accent); }
+    .info-item__value.accent  { color: var(--accent); }
     .info-item__value.accent2 { color: var(--accent2); }
 
     /* ─── Progress Bar ─── */
     .progress-wrap {
-      margin-top: 28px;
+      margin-top: clamp(16px, 3vw, 28px);
       animation: fadeUp 0.9s 0.45s ease both;
     }
 
@@ -390,7 +431,7 @@
 
     .progress-header span {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
+      font-size: clamp(7px, 1.8vw, 9px);
       letter-spacing: 0.25em;
       color: var(--text-muted);
       text-transform: uppercase;
@@ -435,6 +476,8 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease;
+      padding: 20px;
+      text-align: center;
     }
 
     .weekend-msg.visible {
@@ -443,15 +486,15 @@
     }
 
     .weekend-msg__icon {
-      font-size: 64px;
-      margin-bottom: 20px;
+      font-size: clamp(36px, 10vw, 64px);
+      margin-bottom: 14px;
       animation: float 3s ease-in-out infinite;
       filter: drop-shadow(0 0 20px rgba(255,107,53,0.5));
     }
 
     .weekend-msg__title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 42px;
+      font-size: clamp(28px, 8vw, 42px);
       letter-spacing: 0.15em;
       color: var(--accent2);
       text-shadow: 0 0 30px var(--glow2);
@@ -459,19 +502,10 @@
     }
 
     .weekend-msg__sub {
-      font-size: 13px;
+      font-size: clamp(10px, 2.5vw, 13px);
       color: var(--text-muted);
-      letter-spacing: 0.2em;
+      letter-spacing: 0.15em;
       font-weight: 300;
-    }
-
-    /* ─── Glow Pulse on active slots ─── */
-    .slot:not(.is-zero) {
-      animation: slotGlow 4s ease-in-out infinite;
-    }
-    @keyframes slotGlow {
-      0%, 100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5); }
-      50%       { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 12px rgba(245,197,24,0.12), 0 0 0 1px rgba(245,197,24,0.08); }
     }
 
     /* ─── Animations ─── */
@@ -479,48 +513,66 @@
       from { opacity: 0; transform: translateY(-16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.5; transform: scale(0.8); }
     }
-
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50%       { opacity: 0; }
     }
-
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-10px); }
     }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 700px) {
-      :root {
-        --digit-h: 90px;
-        --digit-w: 68px;
+    /* ─── Responsive Breakpoints ─── */
+
+    /* Tablet: 2-column info bar */
+    @media (max-width: 600px) {
+      .info-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px 20px;
       }
-      .reel__item { font-size: 56px; }
-      .clock-panel { padding: 28px 20px; }
-      .sep { padding: 0 8px; padding-bottom: 30px; gap: 12px; }
-      .sep__dot { width: 5px; height: 5px; }
-      .header__title { font-size: 36px; }
-      .info-bar { gap: 16px; }
     }
 
-    @media (max-width: 420px) {
-      :root {
-        --digit-h: 72px;
-        --digit-w: 52px;
+    /* Mobile: stack days row above hours:mins:secs row */
+    @media (max-width: 480px) {
+      .digits-row {
+        flex-direction: column;
+        gap: 10px;
       }
-      .reel__item { font-size: 44px; }
-      .clock-panel { padding: 20px 12px; }
+
+      /* Hide the separator between days and hours on mobile */
+      .sep--day-hour {
+        display: none;
+      }
+
+      /* Show a thin divider line between the two rows instead */
+      .digits-divider {
+        display: block;
+        width: 80%;
+        height: 1px;
+        background: var(--border);
+        margin: 2px 0;
+      }
+    }
+
+    /* Default: hide the divider on desktop */
+    .digits-divider { display: none; }
+
+    /* Extra small: tighten up further */
+    @media (max-width: 360px) {
+      :root {
+        --digit-h: clamp(56px, 14vw, 64px);
+        --digit-w: clamp(42px, 10.5vw, 48px);
+        --digit-fs: clamp(32px, 8.5vw, 38px);
+      }
+      .clock-panel::after { display: none; }
     }
   </style>
 </head>
@@ -537,8 +589,8 @@
   <!-- Header -->
   <div class="header">
     <div class="header__eyebrow">SYSTEM ONLINE</div>
-    <h1 class="header__title">下班倒计时</h1>
-    <p class="header__sub">FRIDAY 18:00 · COUNTDOWN TERMINAL</p>
+    <h1 class="header__title">周末倒计时</h1>
+    <p class="header__sub">FRIDAY 18:00 · WEEKEND COUNTDOWN</p>
   </div>
 
   <!-- Status Badge -->
@@ -560,7 +612,7 @@
     <!-- Digit Row -->
     <div class="digits-row" id="digitsRow">
 
-      <!-- Days -->
+      <!-- Days group -->
       <div class="digit-group">
         <div class="digit-group__label">天</div>
         <div class="digit-group__slots">
@@ -569,7 +621,14 @@
         </div>
       </div>
 
-      <div class="sep"><div class="sep__dot"></div><div class="sep__dot"></div></div>
+      <!-- Separator: hidden on mobile via CSS class -->
+      <div class="sep sep--day-hour">
+        <div class="sep__dot"></div>
+        <div class="sep__dot"></div>
+      </div>
+
+      <!-- Mobile-only divider line -->
+      <div class="digits-divider"></div>
 
       <!-- Hours -->
       <div class="digit-group">
@@ -580,7 +639,10 @@
         </div>
       </div>
 
-      <div class="sep"><div class="sep__dot"></div><div class="sep__dot"></div></div>
+      <div class="sep">
+        <div class="sep__dot"></div>
+        <div class="sep__dot"></div>
+      </div>
 
       <!-- Minutes -->
       <div class="digit-group">
@@ -591,7 +653,10 @@
         </div>
       </div>
 
-      <div class="sep"><div class="sep__dot"></div><div class="sep__dot"></div></div>
+      <div class="sep">
+        <div class="sep__dot"></div>
+        <div class="sep__dot"></div>
+      </div>
 
       <!-- Seconds -->
       <div class="digit-group">
@@ -651,7 +716,6 @@
 
   function buildReel(id) {
     const reel = document.getElementById('reel-' + id);
-    // Build 0–9 items
     for (let i = 0; i <= 9; i++) {
       const item = document.createElement('div');
       item.className = 'reel__item';
@@ -663,14 +727,41 @@
 
   SLOT_IDS.forEach(buildReel);
 
+  function getDigitH() {
+    // Read the computed --digit-h value (handles fluid clamp)
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('--digit-h').trim();
+    // clamp() won't parse directly; measure the actual slot height instead
+    const slot = document.getElementById('d0');
+    return slot ? slot.offsetHeight : 140;
+  }
+
   function setDigit(id, digit) {
     const r = reels[id];
     if (r.current === digit) return;
     r.current = digit;
-    // Offset: digit index * slot height (CSS var --digit-h)
-    const h = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--digit-h'));
+    const h = getDigitH();
     r.el.style.transform = `translateY(${-digit * h}px)`;
   }
+
+  // Re-snap all digits on resize (fluid sizes change)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      SLOT_IDS.forEach(id => {
+        const r = reels[id];
+        if (r.current < 0) return;
+        const h = getDigitH();
+        r.el.style.transition = 'none';
+        r.el.style.transform = `translateY(${-r.current * h}px)`;
+        // Re-enable transition after a frame
+        requestAnimationFrame(() => {
+          r.el.style.transition = '';
+        });
+      });
+    }, 100);
+  });
 
   function setZeroState(isZero) {
     SLOT_IDS.forEach(id => {
@@ -678,7 +769,6 @@
       if (isZero) slot.classList.add('is-zero');
       else slot.classList.remove('is-zero');
     });
-    // Show/hide weekend overlay
     const msg = document.getElementById('weekendMsg');
     if (isZero) msg.classList.add('visible');
     else msg.classList.remove('visible');
@@ -688,70 +778,39 @@
      Time Logic
   ───────────────────────────────────────────── */
 
-  const DAY_NAMES = ['日','一','二','三','四','五','六'];
   const DAY_NAMES_FULL = ['周日','周一','周二','周三','周四','周五','周六'];
 
-  /**
-   * Returns seconds remaining until next Friday 18:00.
-   * Returns 0 if currently in "free time":
-   *   - Friday 18:00 ~ Sunday 23:59:59
-   *   - Saturday all day
-   *   - Sunday all day
-   * Resets on Monday 00:00.
-   */
   function getCountdownSeconds() {
     const now = new Date();
-    const dow = now.getDay(); // 0=Sun,1=Mon,...,5=Fri,6=Sat
-    const h = now.getHours();
-    const m = now.getMinutes();
-    const s = now.getSeconds();
+    const dow = now.getDay();
+    const h   = now.getHours();
 
     // Free time: Fri 18:00+ OR Sat OR Sun
-    const isFriAfter18 = (dow === 5 && (h > 18 || (h === 18 && m === 0 && s === 0)));
-    const isFriAfterExact = (dow === 5 && h >= 18);
-    const isSat = (dow === 6);
-    const isSun = (dow === 0);
-
-    if (isFriAfterExact || isSat || isSun) {
-      return -1; // free time
+    if ((dow === 5 && h >= 18) || dow === 6 || dow === 0) {
+      return -1;
     }
 
-    // Find next Friday 18:00
-    // Days until Friday: (5 - dow + 7) % 7, but if today is Friday before 18:00, same day
-    let daysUntilFri;
-    if (dow === 5) {
-      // It's Friday, before 18:00
-      daysUntilFri = 0;
-    } else {
-      daysUntilFri = (5 - dow + 7) % 7;
-    }
+    // Days until next Friday
+    const daysUntilFri = (dow === 5) ? 0 : (5 - dow + 7) % 7;
 
-    // Build target date
     const target = new Date(now);
     target.setDate(target.getDate() + daysUntilFri);
     target.setHours(18, 0, 0, 0);
 
-    const diff = Math.floor((target - now) / 1000);
-    return Math.max(0, diff);
+    return Math.max(0, Math.floor((target - now) / 1000));
   }
 
-  /**
-   * Total seconds in a work week from Monday 00:00 to Friday 18:00
-   * = 4 days + 18 hours = (4*24 + 18) * 3600 = 108 * 3600 = 388800
-   */
+  // Total work-week seconds: Mon 00:00 → Fri 18:00 = (4*24+18)*3600
   const WEEK_TOTAL = (4 * 24 + 18) * 3600;
 
   function getWeekProgress() {
     const now = new Date();
     const dow = now.getDay();
-    const h = now.getHours();
-    const m = now.getMinutes();
-    const s = now.getSeconds();
+    const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
 
-    if (dow === 0 || dow === 6) return 100; // weekend
-    if (dow === 5 && h >= 18) return 100;
+    if (dow === 0 || dow === 6) return 100;
+    if (dow === 5 && h >= 18)   return 100;
 
-    // Seconds elapsed since Monday 00:00
     const daysSinceMon = (dow === 0 ? 6 : dow - 1);
     const elapsed = daysSinceMon * 86400 + h * 3600 + m * 60 + s;
     return Math.min(100, (elapsed / WEEK_TOTAL) * 100);
@@ -764,61 +823,44 @@
   function pad2(n) { return String(n).padStart(2, '0'); }
 
   function render() {
-    const now = new Date();
-    const dow = now.getDay();
+    const now  = new Date();
+    const dow  = now.getDay();
     const secs = getCountdownSeconds();
 
-    // Current time display
     document.getElementById('currentTime').textContent =
       `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
-
-    // Today label
     document.getElementById('todayDay').textContent = DAY_NAMES_FULL[dow];
 
     if (secs === -1) {
-      // ── Free time ──
       setZeroState(true);
-      ['d0','d1','h0','h1','m0','m1','s0','s1'].forEach(id => setDigit(id, 0));
-
+      SLOT_IDS.forEach(id => setDigit(id, 0));
       document.getElementById('statusDot').classList.add('off');
       document.getElementById('statusText').textContent = '自由时间 · 享受周末';
       document.getElementById('totalSecs').textContent = '000000';
       document.getElementById('progressFill').style.width = '100%';
       document.getElementById('progressPct').textContent = '100%';
       document.getElementById('targetTime').textContent = '下周一重置';
-
     } else {
-      // ── Counting down ──
       setZeroState(false);
 
-      const days  = Math.floor(secs / 86400);
-      const hours = Math.floor((secs % 86400) / 3600);
-      const mins  = Math.floor((secs % 3600) / 60);
-      const sc    = secs % 60;
+      const days = Math.floor(secs / 86400);
+      const hrs  = Math.floor((secs % 86400) / 3600);
+      const mins = Math.floor((secs % 3600) / 60);
+      const sc   = secs % 60;
 
-      const d0 = Math.floor(days / 10);
-      const d1 = days % 10;
-      const h0 = Math.floor(hours / 10);
-      const h1 = hours % 10;
-      const m0 = Math.floor(mins / 10);
-      const m1 = mins % 10;
-      const s0 = Math.floor(sc / 10);
-      const s1 = sc % 10;
-
-      setDigit('d0', d0);
-      setDigit('d1', d1);
-      setDigit('h0', h0);
-      setDigit('h1', h1);
-      setDigit('m0', m0);
-      setDigit('m1', m1);
-      setDigit('s0', s0);
-      setDigit('s1', s1);
+      setDigit('d0', Math.floor(days / 10));
+      setDigit('d1', days % 10);
+      setDigit('h0', Math.floor(hrs / 10));
+      setDigit('h1', hrs % 10);
+      setDigit('m0', Math.floor(mins / 10));
+      setDigit('m1', mins % 10);
+      setDigit('s0', Math.floor(sc / 10));
+      setDigit('s1', sc % 10);
 
       document.getElementById('statusDot').classList.remove('off');
-      document.getElementById('statusText').textContent = '倒计时进行中 · COUNTING DOWN';
+      document.getElementById('statusText').textContent = '倒计时进行中 · TO THE WEEKEND';
       document.getElementById('totalSecs').textContent = String(secs).padStart(6, '0');
 
-      // Progress
       const pct = getWeekProgress();
       document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
       document.getElementById('progressPct').textContent = pct.toFixed(1) + '%';
@@ -826,10 +868,8 @@
     }
   }
 
-  // Init reels to 0 first
+  // Init
   SLOT_IDS.forEach(id => setDigit(id, 0));
-
-  // Staggered startup animation
   setTimeout(() => {
     render();
     setInterval(render, 1000);
