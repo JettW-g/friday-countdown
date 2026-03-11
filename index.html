@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Noto+Sans+SC:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -22,59 +21,38 @@
       --text-muted:#5a6a82;
       --glow:      rgba(245,197,24,0.35);
       --glow2:     rgba(255,107,53,0.25);
-
-      /* ── Fluid digit sizing using clamp ── */
       --digit-h: clamp(64px, 16vw, 140px);
       --digit-w: clamp(48px, 12vw, 110px);
       --digit-fs: clamp(38px, 10vw, 88px);
     }
 
-    html {
-      height: 100%;
-      background: var(--bg);
-    }
-
+    html { height: 100%; background: var(--bg); }
     body {
       min-height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Noto Sans SC', sans-serif;
-      /* Allow scroll on very small screens */
       overflow-x: hidden;
       overflow-y: auto;
     }
 
-    /* ─── Noise Overlay ─── */
+    /* Noise */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.6;
+      pointer-events: none; z-index: 999; opacity: 0.6;
     }
-
-    /* ─── Scan Lines ─── */
+    /* Scan lines */
     body::after {
       content: '';
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.07) 2px,
-        rgba(0,0,0,0.07) 4px
-      );
-      pointer-events: none;
-      z-index: 998;
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px);
+      pointer-events: none; z-index: 998;
     }
 
-    /* ─── Grid Background ─── */
     .grid-bg {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image:
         linear-gradient(rgba(30,37,48,0.4) 1px, transparent 1px),
         linear-gradient(90deg, rgba(30,37,48,0.4) 1px, transparent 1px);
@@ -82,497 +60,378 @@
       pointer-events: none;
     }
 
-    /* ─── Corner Decorations ─── */
     .corner {
-      position: fixed;
-      width: 40px;
-      height: 40px;
-      border-color: var(--dim);
-      border-style: solid;
-      opacity: 0.4;
-      z-index: 10;
+      position: fixed; width: 40px; height: 40px;
+      border-color: var(--dim); border-style: solid; opacity: 0.4; z-index: 10;
     }
-    .corner--tl { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
-    .corner--tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
-    .corner--bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
-    .corner--br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+    .corner--tl { top:14px; left:14px;   border-width: 2px 0 0 2px; }
+    .corner--tr { top:14px; right:14px;  border-width: 2px 2px 0 0; }
+    .corner--bl { bottom:14px; left:14px;  border-width: 0 0 2px 2px; }
+    .corner--br { bottom:14px; right:14px; border-width: 0 2px 2px 0; }
 
-    /* ─── Page Layout ─── */
+    /* ── Page ── */
     .page {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center;
       min-height: 100vh;
-      padding: clamp(16px, 4vw, 32px);
-      padding-top: clamp(32px, 6vw, 48px);
-      padding-bottom: clamp(32px, 6vw, 48px);
-      position: relative;
+      padding: clamp(16px,4vw,32px);
+      padding-top: clamp(32px,6vw,48px);
+      padding-bottom: clamp(32px,6vw,48px);
+      position: relative; gap: clamp(16px,3vw,28px);
     }
 
-    /* ─── Header ─── */
-    .header {
-      text-align: center;
-      margin-bottom: clamp(20px, 4vw, 48px);
-      animation: fadeDown 0.8s ease both;
-      width: 100%;
-    }
-
+    /* ── Header ── */
+    .header { text-align: center; animation: fadeDown 0.8s ease both; width: 100%; }
     .header__eyebrow {
       font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(9px, 2.2vw, 11px);
-      letter-spacing: 0.3em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      font-size: clamp(9px,2.2vw,11px); letter-spacing: 0.3em;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
     }
-    .header__eyebrow::before,
-    .header__eyebrow::after {
-      content: '';
-      width: clamp(20px, 5vw, 40px);
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.5;
+    .header__eyebrow::before, .header__eyebrow::after {
+      content:''; width: clamp(20px,5vw,40px); height:1px;
+      background: var(--accent); opacity: 0.5;
     }
-
     .header__title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(32px, 9vw, 72px);
-      letter-spacing: 0.12em;
-      color: #fff;
-      line-height: 1;
-      text-shadow: 0 0 40px rgba(245,197,24,0.2);
+      font-size: clamp(32px,9vw,72px); letter-spacing: 0.12em;
+      color: #fff; line-height: 1; text-shadow: 0 0 40px rgba(245,197,24,0.2);
     }
-
     .header__sub {
-      font-size: clamp(9px, 2.2vw, 12px);
-      color: var(--text-muted);
-      letter-spacing: 0.18em;
-      margin-top: 8px;
-      font-weight: 300;
+      font-size: clamp(9px,2.2vw,12px); color: var(--text-muted);
+      letter-spacing: 0.18em; margin-top: 8px; font-weight: 300;
     }
 
-    /* ─── Status Badge ─── */
+    /* ── Status Badge ── */
     .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(9px, 2.2vw, 11px);
-      letter-spacing: 0.12em;
-      padding: 5px 12px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      margin-bottom: clamp(16px, 3.5vw, 36px);
+      font-size: clamp(9px,2.2vw,11px); letter-spacing: 0.12em;
+      padding: 5px 12px; border: 1px solid var(--border); border-radius: 2px;
       background: rgba(15,19,24,0.8);
-      animation: fadeDown 0.8s 0.1s ease both;
-      white-space: nowrap;
+      animation: fadeDown 0.8s 0.1s ease both; white-space: nowrap;
     }
-
     .status-dot {
-      width: 7px;
-      height: 7px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
+      width:7px; height:7px; flex-shrink:0; border-radius:50%;
+      background: var(--accent); box-shadow: 0 0 8px var(--accent);
       animation: pulse 1.5s ease-in-out infinite;
     }
+    .status-dot.off { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); animation: none; }
 
-    .status-dot.off {
-      background: var(--accent2);
-      box-shadow: 0 0 8px var(--accent2);
-      animation: none;
-    }
-
-    /* ─── Main Clock Panel ─── */
+    /* ── Main Clock Panel ── */
     .clock-panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: clamp(16px, 4vw, 40px) clamp(12px, 4vw, 48px);
-      position: relative;
-      animation: fadeUp 0.9s 0.2s ease both;
-      box-shadow:
-        0 0 0 1px rgba(245,197,24,0.05),
-        0 20px 60px rgba(0,0,0,0.6),
-        inset 0 1px 0 rgba(255,255,255,0.04);
-      width: 100%;
-      max-width: 900px;
+      background: var(--panel); border: 1px solid var(--border);
+      padding: clamp(16px,4vw,40px) clamp(12px,4vw,48px);
+      position: relative; animation: fadeUp 0.9s 0.2s ease both;
+      box-shadow: 0 0 0 1px rgba(245,197,24,0.05), 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+      width: 100%; max-width: 900px;
     }
-
-    /* Panel accent line */
     .clock-panel::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 30px; right: 30px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.6;
+      content:''; position:absolute; top:0; left:30px; right:30px; height:2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity:0.6;
     }
-
-    /* Panel label */
     .clock-panel::after {
-      content: 'COUNTDOWN SYSTEM v2.1';
-      position: absolute;
-      bottom: -1px; right: 16px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 0.2em;
-      color: var(--dim);
-      background: var(--panel);
-      padding: 0 6px;
+      content:'COUNTDOWN SYSTEM v3.0'; position:absolute; bottom:-1px; right:16px;
+      font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em;
+      color:var(--dim); background:var(--panel); padding:0 6px;
     }
 
-    /* ─── Digit Groups Row ─── */
+    /* ── Digit Row ── */
     .digits-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      flex-wrap: nowrap;
-      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; flex-wrap: nowrap; width: 100%;
     }
-
-    /* On very small screens: stack days+time into two rows */
-    .digits-row--stacked {
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .digits-row--stacked .digits-top,
-    .digits-row--stacked .digits-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .digit-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
+    .digit-group { display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; }
     .digit-group__label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(8px, 2vw, 10px);
-      letter-spacing: 0.3em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      order: 2;
+      font-family:'Share Tech Mono',monospace; font-size:clamp(8px,2vw,10px);
+      letter-spacing:0.3em; color:var(--text-muted); text-transform:uppercase; order:2;
     }
+    .digit-group__slots { display:flex; gap:clamp(2px,0.5vw,4px); order:1; }
 
-    .digit-group__slots {
-      display: flex;
-      gap: clamp(2px, 0.5vw, 4px);
-      order: 1;
-    }
-
-    /* ─── Separator ─── */
     .sep {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(10px, 2.5vw, 16px);
-      padding: 0 clamp(6px, 1.5vw, 16px);
-      padding-bottom: clamp(20px, 5vw, 30px);
-      align-self: center;
-      flex-shrink: 0;
+      display:flex; flex-direction:column; gap:clamp(10px,2.5vw,16px);
+      padding:0 clamp(6px,1.5vw,16px); padding-bottom:clamp(20px,5vw,30px);
+      align-self:center; flex-shrink:0;
     }
-
     .sep__dot {
-      width: clamp(4px, 1.2vw, 6px);
-      height: clamp(4px, 1.2vw, 6px);
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--glow);
-      animation: blink 1s step-end infinite;
+      width:clamp(4px,1.2vw,6px); height:clamp(4px,1.2vw,6px); border-radius:50%;
+      background:var(--accent); box-shadow:0 0 10px var(--glow); animation:blink 1s step-end infinite;
     }
 
-    /* ─── Single Digit Slot ─── */
     .slot {
-      width: var(--digit-w);
-      height: var(--digit-h);
-      background: #080a0d;
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-      border-radius: 3px;
-      box-shadow:
-        inset 0 2px 8px rgba(0,0,0,0.8),
-        0 0 0 1px rgba(0,0,0,0.5);
+      width:var(--digit-w); height:var(--digit-h);
+      background:#080a0d; border:1px solid var(--border);
+      position:relative; overflow:hidden; border-radius:3px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5);
     }
-
-    /* Glow pulse on active slots */
-    .slot:not(.is-zero) {
-      animation: slotGlow 4s ease-in-out infinite;
-    }
+    .slot:not(.is-zero) { animation: slotGlow 4s ease-in-out infinite; }
     @keyframes slotGlow {
-      0%, 100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5); }
-      50%       { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 12px rgba(245,197,24,0.12), 0 0 0 1px rgba(245,197,24,0.08); }
+      0%,100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,0,0,0.5); }
+      50%      { box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 12px rgba(245,197,24,0.12), 0 0 0 1px rgba(245,197,24,0.08); }
     }
-
-    /* Slot top/bottom fade masks */
     .slot::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(8,10,13,0.95) 0%,
-        transparent 25%,
-        transparent 75%,
-        rgba(8,10,13,0.95) 100%
-      );
-      z-index: 2;
-      pointer-events: none;
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(to bottom, rgba(8,10,13,0.95) 0%, transparent 25%, transparent 75%, rgba(8,10,13,0.95) 100%);
+      z-index:2; pointer-events:none;
     }
-
-    /* Slot center highlight line */
     .slot::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.15;
-      z-index: 3;
+      content:''; position:absolute; left:0; right:0; top:50%; transform:translateY(-50%);
+      height:1px; background:linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity:0.15; z-index:3;
     }
+    .slot.is-zero .reel__item { color:var(--dim); text-shadow:none; }
+    .slot.is-zero::after { opacity:0; }
 
-    /* ─── Digit Reel ─── */
     .reel {
-      position: absolute;
-      left: 0; right: 0;
-      top: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      will-change: transform;
-      transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      position:absolute; left:0; right:0; top:0;
+      display:flex; flex-direction:column; align-items:center;
+      will-change:transform; transition:transform 0.35s cubic-bezier(0.23,1,0.32,1);
     }
-
     .reel__item {
-      width: 100%;
-      height: var(--digit-h);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: var(--digit-fs);
-      color: var(--accent);
-      text-shadow:
-        0 0 20px var(--glow),
-        0 0 60px rgba(245,197,24,0.1);
-      letter-spacing: 0.02em;
-      flex-shrink: 0;
-      user-select: none;
+      width:100%; height:var(--digit-h);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Bebas Neue',sans-serif; font-size:var(--digit-fs);
+      color:var(--accent);
+      text-shadow: 0 0 20px var(--glow), 0 0 60px rgba(245,197,24,0.1);
+      letter-spacing:0.02em; flex-shrink:0; user-select:none;
     }
 
-    /* ─── Weekend / Zero State ─── */
-    .slot.is-zero .reel__item {
-      color: var(--dim);
-      text-shadow: none;
-    }
-    .slot.is-zero::after { opacity: 0; }
-
-    /* ─── Info Bar ─── */
+    /* ── Info Bar ── */
     .info-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: clamp(20px, 4vw, 40px);
-      padding-top: clamp(14px, 3vw, 20px);
-      border-top: 1px solid var(--border);
-      animation: fadeUp 0.9s 0.35s ease both;
+      display:grid; grid-template-columns:repeat(4,1fr); gap:12px;
+      margin-top:clamp(20px,4vw,40px); padding-top:clamp(14px,3vw,20px);
+      border-top:1px solid var(--border); animation:fadeUp 0.9s 0.35s ease both;
     }
-
-    .info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
+    .info-item { display:flex; flex-direction:column; gap:4px; }
     .info-item__label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(7px, 1.8vw, 9px);
-      letter-spacing: 0.25em;
-      color: var(--text-muted);
-      text-transform: uppercase;
+      font-family:'Share Tech Mono',monospace; font-size:clamp(7px,1.8vw,9px);
+      letter-spacing:0.25em; color:var(--text-muted); text-transform:uppercase; white-space:nowrap;
+    }
+    .info-item__value {
+      font-family:'Share Tech Mono',monospace; font-size:clamp(11px,2.8vw,13px);
+      color:var(--text); letter-spacing:0.08em;
+    }
+    .info-item__value.accent  { color:var(--accent); }
+    .info-item__value.accent2 { color:var(--accent2); }
+
+    /* ── Progress Bar ── */
+    .progress-wrap { margin-top:clamp(16px,3vw,28px); animation:fadeUp 0.9s 0.45s ease both; }
+    .progress-header { display:flex; justify-content:space-between; margin-bottom:8px; }
+    .progress-header span {
+      font-family:'Share Tech Mono',monospace; font-size:clamp(7px,1.8vw,9px);
+      letter-spacing:0.25em; color:var(--text-muted); text-transform:uppercase;
+    }
+    .progress-track { height:3px; background:var(--border); border-radius:2px; overflow:hidden; position:relative; }
+    .progress-fill {
+      height:100%; background:linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius:2px; transition:width 1s linear; position:relative;
+    }
+    .progress-fill::after {
+      content:''; position:absolute; right:0; top:-3px;
+      width:2px; height:9px; background:#fff; border-radius:1px; box-shadow:0 0 6px #fff;
+    }
+
+    /* ── Weekend Overlay ── */
+    .weekend-msg {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      background:rgba(8,10,13,0.92); z-index:10;
+      opacity:0; pointer-events:none; transition:opacity 0.5s ease;
+      padding:20px; text-align:center;
+    }
+    .weekend-msg.visible { opacity:1; pointer-events:auto; }
+    .weekend-msg__icon {
+      font-size:clamp(36px,10vw,64px); margin-bottom:14px;
+      animation:float 3s ease-in-out infinite;
+      filter:drop-shadow(0 0 20px rgba(255,107,53,0.5));
+    }
+    .weekend-msg__title {
+      font-family:'Bebas Neue',sans-serif; font-size:clamp(28px,8vw,42px);
+      letter-spacing:0.15em; color:var(--accent2); text-shadow:0 0 30px var(--glow2); margin-bottom:8px;
+    }
+    .weekend-msg__sub { font-size:clamp(10px,2.5vw,13px); color:var(--text-muted); letter-spacing:0.15em; font-weight:300; }
+
+    /* ════════════════════════════════════════
+       DAILY SCHEDULE PANEL
+    ════════════════════════════════════════ */
+    .schedule-panel {
+      background: var(--panel); border: 1px solid var(--border);
+      padding: clamp(16px,3.5vw,32px) clamp(12px,4vw,40px);
+      width: 100%; max-width: 900px;
+      animation: fadeUp 0.9s 0.5s ease both;
+      position: relative;
+    }
+    .schedule-panel::before {
+      content:''; position:absolute; top:0; left:30px; right:30px; height:2px;
+      background:linear-gradient(90deg, transparent, var(--accent2), transparent); opacity:0.5;
+    }
+    .schedule-panel::after {
+      content:'DAILY SCHEDULE'; position:absolute; top:-1px; left:16px;
+      font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:0.2em;
+      color:var(--dim); background:var(--panel); padding:0 6px;
+    }
+
+    .schedule-title {
+      font-family:'Share Tech Mono',monospace; font-size:clamp(9px,2vw,11px);
+      letter-spacing:0.3em; color:var(--text-muted); text-transform:uppercase;
+      margin-bottom:clamp(12px,2.5vw,20px);
+    }
+
+    /* Each day row */
+    .day-row {
+      display: grid;
+      grid-template-columns: clamp(52px,12vw,90px) 1fr clamp(120px,28vw,220px) 28px;
+      align-items: center;
+      gap: clamp(8px,2vw,16px);
+      padding: clamp(10px,2vw,14px) 0;
+      border-bottom: 1px solid rgba(30,37,48,0.6);
+      transition: opacity 0.6s ease;
+      position: relative;
+    }
+    .day-row:last-child { border-bottom: none; }
+
+    /* Completed state */
+    .day-row.done {
+      opacity: 0.35;
+    }
+    .day-row.done .day-label { color: var(--dim); }
+    .day-row.done .day-bar-fill { background: var(--dim); }
+    .day-row.done .day-countdown { color: var(--dim); }
+
+    /* Active / current day */
+    .day-row.active .day-label { color: var(--accent); }
+    .day-row.active .day-countdown { color: var(--accent); }
+
+    /* Future days */
+    .day-row.future .day-label { color: var(--text-muted); }
+    .day-row.future .day-countdown { color: var(--text-muted); }
+
+    .day-label {
+      font-family:'Bebas Neue',sans-serif;
+      font-size: clamp(18px,4.5vw,28px);
+      letter-spacing: 0.1em;
+      color: var(--text);
       white-space: nowrap;
     }
 
-    .info-item__value {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(11px, 2.8vw, 13px);
-      color: var(--text);
-      letter-spacing: 0.08em;
+    .day-bar-wrap {
+      height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
     }
-
-    .info-item__value.accent  { color: var(--accent); }
-    .info-item__value.accent2 { color: var(--accent2); }
-
-    /* ─── Progress Bar ─── */
-    .progress-wrap {
-      margin-top: clamp(16px, 3vw, 28px);
-      animation: fadeUp 0.9s 0.45s ease both;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .progress-header span {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: clamp(7px, 1.8vw, 9px);
-      letter-spacing: 0.25em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .progress-track {
-      height: 3px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
+    .day-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--accent2), var(--accent));
       border-radius: 2px;
       transition: width 1s linear;
-      position: relative;
+      width: 0%;
     }
 
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      right: 0; top: -3px;
-      width: 2px; height: 9px;
-      background: #fff;
-      border-radius: 1px;
-      box-shadow: 0 0 6px #fff;
+    .day-countdown {
+      font-family:'Share Tech Mono',monospace;
+      font-size: clamp(11px,2.8vw,15px);
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-align: right;
+      white-space: nowrap;
     }
 
-    /* ─── Weekend Message ─── */
-    .weekend-msg {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(8,10,13,0.92);
-      z-index: 10;
+    .day-done-icon {
+      font-size: clamp(14px,3.5vw,20px);
       opacity: 0;
-      pointer-events: none;
       transition: opacity 0.5s ease;
-      padding: 20px;
       text-align: center;
     }
+    .day-row.done .day-done-icon { opacity: 1; }
 
-    .weekend-msg.visible {
-      opacity: 1;
-      pointer-events: auto;
+    /* ════════════════════════════════════════
+       FINAL 60s FULLSCREEN OVERLAY
+    ════════════════════════════════════════ */
+    .final-overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.8s ease;
+      overflow: hidden;
+    }
+    .final-overlay.active { opacity: 1; pointer-events: auto; }
+
+    /* Pulsing radial background */
+    .final-overlay__bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(245,197,24,0.12) 0%, transparent 70%);
+      animation: bgPulse 1s ease-in-out infinite;
+    }
+    @keyframes bgPulse {
+      0%,100% { transform: scale(1); opacity: 0.6; }
+      50%      { transform: scale(1.15); opacity: 1; }
     }
 
-    .weekend-msg__icon {
-      font-size: clamp(36px, 10vw, 64px);
-      margin-bottom: 14px;
-      animation: float 3s ease-in-out infinite;
-      filter: drop-shadow(0 0 20px rgba(255,107,53,0.5));
+    .final-label {
+      font-family:'Share Tech Mono',monospace;
+      font-size: clamp(11px,2.5vw,14px);
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: clamp(16px,4vw,32px);
+      animation: fadeDown 0.6s ease both;
+      position: relative; z-index: 1;
     }
 
-    .weekend-msg__title {
+    .final-number {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(28px, 8vw, 42px);
-      letter-spacing: 0.15em;
-      color: var(--accent2);
-      text-shadow: 0 0 30px var(--glow2);
-      margin-bottom: 8px;
+      font-size: clamp(160px, 40vw, 380px);
+      line-height: 0.85;
+      color: var(--accent);
+      text-shadow:
+        0 0 60px var(--glow),
+        0 0 120px rgba(245,197,24,0.3),
+        0 0 200px rgba(245,197,24,0.1);
+      animation: numPulse 1s ease-in-out infinite;
+      position: relative; z-index: 1;
+      letter-spacing: -0.02em;
+    }
+    @keyframes numPulse {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.04); }
     }
 
-    .weekend-msg__sub {
-      font-size: clamp(10px, 2.5vw, 13px);
+    .final-sub {
+      font-family:'Share Tech Mono',monospace;
+      font-size: clamp(10px,2.2vw,13px);
+      letter-spacing: 0.3em;
       color: var(--text-muted);
-      letter-spacing: 0.15em;
-      font-weight: 300;
+      margin-top: clamp(16px,4vw,28px);
+      position: relative; z-index: 1;
     }
 
-    /* ─── Animations ─── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(0.8); }
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0; }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
+    /* Particle canvas */
+    #particleCanvas {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 2;
     }
 
-    /* ─── Responsive Breakpoints ─── */
+    /* ── Animations ── */
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(16px)}  to{opacity:1;transform:translateY(0)} }
+    @keyframes pulse    { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0} }
+    @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
 
-    /* Tablet: 2-column info bar */
-    @media (max-width: 600px) {
-      .info-bar {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px 20px;
-      }
+    /* ── Responsive ── */
+    @media (max-width:600px) {
+      .info-bar { grid-template-columns:repeat(2,1fr); gap:14px 20px; }
+      .day-row { grid-template-columns: clamp(44px,11vw,60px) 1fr clamp(100px,26vw,160px) 22px; gap:8px; }
     }
-
-    /* Mobile: stack days row above hours:mins:secs row */
-    @media (max-width: 480px) {
-      .digits-row {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      /* Hide the separator between days and hours on mobile */
-      .sep--day-hour {
-        display: none;
-      }
-
-      /* Show a thin divider line between the two rows instead */
-      .digits-divider {
-        display: block;
-        width: 80%;
-        height: 1px;
-        background: var(--border);
-        margin: 2px 0;
-      }
+    @media (max-width:480px) {
+      .digits-row { flex-direction:column; gap:10px; }
+      .sep--day-hour { display:none; }
+      .digits-divider { display:block; width:80%; height:1px; background:var(--border); margin:2px 0; }
     }
-
-    /* Default: hide the divider on desktop */
-    .digits-divider { display: none; }
-
-    /* Extra small: tighten up further */
-    @media (max-width: 360px) {
-      :root {
-        --digit-h: clamp(56px, 14vw, 64px);
-        --digit-w: clamp(42px, 10.5vw, 48px);
-        --digit-fs: clamp(32px, 8.5vw, 38px);
-      }
-      .clock-panel::after { display: none; }
+    .digits-divider { display:none; }
+    @media (max-width:360px) {
+      :root { --digit-h:clamp(56px,14vw,64px); --digit-w:clamp(42px,10.5vw,48px); --digit-fs:clamp(32px,8.5vw,38px); }
+      .clock-panel::after { display:none; }
+      .day-row { grid-template-columns: 44px 1fr 100px 20px; gap:6px; }
     }
   </style>
 </head>
@@ -583,6 +442,15 @@
 <div class="corner corner--tr"></div>
 <div class="corner corner--bl"></div>
 <div class="corner corner--br"></div>
+
+<!-- ══ FINAL 60s FULLSCREEN OVERLAY ══ -->
+<div class="final-overlay" id="finalOverlay">
+  <div class="final-overlay__bg"></div>
+  <canvas id="particleCanvas"></canvas>
+  <div class="final-label">🎉 距离周末还有</div>
+  <div class="final-number" id="finalNumber">60</div>
+  <div class="final-sub">SECONDS TO FREEDOM · 即将解放</div>
+</div>
 
 <div class="page">
 
@@ -599,20 +467,15 @@
     <span id="statusText">正在计算...</span>
   </div>
 
-  <!-- Clock Panel -->
+  <!-- ══ MAIN CLOCK PANEL ══ -->
   <div class="clock-panel" style="position:relative;">
-
-    <!-- Weekend overlay message -->
     <div class="weekend-msg" id="weekendMsg">
       <div class="weekend-msg__icon">🎉</div>
       <div class="weekend-msg__title">自由时间</div>
       <div class="weekend-msg__sub">ENJOY YOUR WEEKEND · 下周一重置</div>
     </div>
 
-    <!-- Digit Row -->
     <div class="digits-row" id="digitsRow">
-
-      <!-- Days group -->
       <div class="digit-group">
         <div class="digit-group__label">天</div>
         <div class="digit-group__slots">
@@ -620,17 +483,8 @@
           <div class="slot" id="d1"><div class="reel" id="reel-d1"></div></div>
         </div>
       </div>
-
-      <!-- Separator: hidden on mobile via CSS class -->
-      <div class="sep sep--day-hour">
-        <div class="sep__dot"></div>
-        <div class="sep__dot"></div>
-      </div>
-
-      <!-- Mobile-only divider line -->
+      <div class="sep sep--day-hour"><div class="sep__dot"></div><div class="sep__dot"></div></div>
       <div class="digits-divider"></div>
-
-      <!-- Hours -->
       <div class="digit-group">
         <div class="digit-group__label">时</div>
         <div class="digit-group__slots">
@@ -638,13 +492,7 @@
           <div class="slot" id="h1"><div class="reel" id="reel-h1"></div></div>
         </div>
       </div>
-
-      <div class="sep">
-        <div class="sep__dot"></div>
-        <div class="sep__dot"></div>
-      </div>
-
-      <!-- Minutes -->
+      <div class="sep"><div class="sep__dot"></div><div class="sep__dot"></div></div>
       <div class="digit-group">
         <div class="digit-group__label">分</div>
         <div class="digit-group__slots">
@@ -652,13 +500,7 @@
           <div class="slot" id="m1"><div class="reel" id="reel-m1"></div></div>
         </div>
       </div>
-
-      <div class="sep">
-        <div class="sep__dot"></div>
-        <div class="sep__dot"></div>
-      </div>
-
-      <!-- Seconds -->
+      <div class="sep"><div class="sep__dot"></div><div class="sep__dot"></div></div>
       <div class="digit-group">
         <div class="digit-group__label">秒</div>
         <div class="digit-group__slots">
@@ -666,10 +508,8 @@
           <div class="slot" id="s1"><div class="reel" id="reel-s1"></div></div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /digits-row -->
-
-    <!-- Info Bar -->
     <div class="info-bar">
       <div class="info-item">
         <div class="info-item__label">当前时间</div>
@@ -689,7 +529,6 @@
       </div>
     </div>
 
-    <!-- Progress Bar -->
     <div class="progress-wrap">
       <div class="progress-header">
         <span>本周进度</span>
@@ -699,181 +538,358 @@
         <div class="progress-fill" id="progressFill" style="width:0%"></div>
       </div>
     </div>
+  </div>
 
-  </div><!-- /clock-panel -->
+  <!-- ══ DAILY SCHEDULE PANEL ══ -->
+  <div class="schedule-panel">
+    <div class="schedule-title">本周每日倒计时 · 09:00 → 18:00</div>
+    <div id="scheduleList"></div>
+  </div>
 
 </div><!-- /page -->
 
 <script>
-  /* ─────────────────────────────────────────────
-     Reel Setup
-     Each slot shows digits 0–9 in a vertical strip.
-     We offset the strip so the correct digit is centered.
-  ───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   REEL SETUP
+══════════════════════════════════════════════ */
+const SLOT_IDS = ['d0','d1','h0','h1','m0','m1','s0','s1'];
+const reels = {};
 
-  const SLOT_IDS = ['d0','d1','h0','h1','m0','m1','s0','s1'];
-  const reels = {};
-
-  function buildReel(id) {
-    const reel = document.getElementById('reel-' + id);
-    for (let i = 0; i <= 9; i++) {
-      const item = document.createElement('div');
-      item.className = 'reel__item';
-      item.textContent = i;
-      reel.appendChild(item);
-    }
-    reels[id] = { el: reel, current: -1 };
+function buildReel(id) {
+  const reel = document.getElementById('reel-' + id);
+  for (let i = 0; i <= 9; i++) {
+    const item = document.createElement('div');
+    item.className = 'reel__item';
+    item.textContent = i;
+    reel.appendChild(item);
   }
+  reels[id] = { el: reel, current: -1 };
+}
+SLOT_IDS.forEach(buildReel);
 
-  SLOT_IDS.forEach(buildReel);
+function getDigitH() {
+  const slot = document.getElementById('d0');
+  return slot ? slot.offsetHeight : 140;
+}
 
-  function getDigitH() {
-    // Read the computed --digit-h value (handles fluid clamp)
-    const raw = getComputedStyle(document.documentElement)
-      .getPropertyValue('--digit-h').trim();
-    // clamp() won't parse directly; measure the actual slot height instead
-    const slot = document.getElementById('d0');
-    return slot ? slot.offsetHeight : 140;
-  }
+function setDigit(id, digit) {
+  const r = reels[id];
+  if (r.current === digit) return;
+  r.current = digit;
+  const h = getDigitH();
+  r.el.style.transform = `translateY(${-digit * h}px)`;
+}
 
-  function setDigit(id, digit) {
-    const r = reels[id];
-    if (r.current === digit) return;
-    r.current = digit;
-    const h = getDigitH();
-    r.el.style.transform = `translateY(${-digit * h}px)`;
-  }
-
-  // Re-snap all digits on resize (fluid sizes change)
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      SLOT_IDS.forEach(id => {
-        const r = reels[id];
-        if (r.current < 0) return;
-        const h = getDigitH();
-        r.el.style.transition = 'none';
-        r.el.style.transform = `translateY(${-r.current * h}px)`;
-        // Re-enable transition after a frame
-        requestAnimationFrame(() => {
-          r.el.style.transition = '';
-        });
-      });
-    }, 100);
-  });
-
-  function setZeroState(isZero) {
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
     SLOT_IDS.forEach(id => {
-      const slot = document.getElementById(id);
-      if (isZero) slot.classList.add('is-zero');
-      else slot.classList.remove('is-zero');
+      const r = reels[id];
+      if (r.current < 0) return;
+      const h = getDigitH();
+      r.el.style.transition = 'none';
+      r.el.style.transform = `translateY(${-r.current * h}px)`;
+      requestAnimationFrame(() => { r.el.style.transition = ''; });
     });
-    const msg = document.getElementById('weekendMsg');
-    if (isZero) msg.classList.add('visible');
-    else msg.classList.remove('visible');
+  }, 100);
+});
+
+function setZeroState(isZero) {
+  SLOT_IDS.forEach(id => {
+    const slot = document.getElementById(id);
+    isZero ? slot.classList.add('is-zero') : slot.classList.remove('is-zero');
+  });
+  const msg = document.getElementById('weekendMsg');
+  isZero ? msg.classList.add('visible') : msg.classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════════
+   TIME LOGIC
+══════════════════════════════════════════════ */
+const DAY_NAMES_FULL = ['周日','周一','周二','周三','周四','周五','周六'];
+const DAY_NAMES_SHORT = ['日','一','二','三','四','五','六'];
+
+// Seconds until Friday 18:00 (main countdown)
+function getCountdownSeconds() {
+  const now = new Date();
+  const dow = now.getDay(), h = now.getHours();
+  if ((dow === 5 && h >= 18) || dow === 6 || dow === 0) return -1;
+  const daysUntilFri = (dow === 5) ? 0 : (5 - dow + 7) % 7;
+  const target = new Date(now);
+  target.setDate(target.getDate() + daysUntilFri);
+  target.setHours(18, 0, 0, 0);
+  return Math.max(0, Math.floor((target - now) / 1000));
+}
+
+const WEEK_TOTAL = (4 * 24 + 18) * 3600;
+function getWeekProgress() {
+  const now = new Date();
+  const dow = now.getDay(), h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  if (dow === 0 || dow === 6) return 100;
+  if (dow === 5 && h >= 18) return 100;
+  const daysSinceMon = (dow === 0 ? 6 : dow - 1);
+  const elapsed = daysSinceMon * 86400 + h * 3600 + m * 60 + s;
+  return Math.min(100, (elapsed / WEEK_TOTAL) * 100);
+}
+
+// Per-day countdown: 09:00 → 18:00 = 32400s total
+const DAY_WORK_SECS = 9 * 3600; // 9 hours
+
+/**
+ * For a given weekday (1=Mon..5=Fri), compute:
+ *   status: 'done' | 'active' | 'future'
+ *   secsLeft: seconds remaining until 18:00 that day (only meaningful when active)
+ *   progress: 0-100
+ */
+function getDayInfo(dayOfWeek) {
+  const now = new Date();
+  const dow = now.getDay(); // 0=Sun
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const todaySecs = h * 3600 + m * 60 + s;
+
+  // dayOfWeek: 1=Mon,2=Tue,3=Wed,4=Thu,5=Fri
+  if (dow === 0 || dow === 6) {
+    // Weekend: all days done
+    return { status: 'done', secsLeft: 0, progress: 100 };
   }
 
-  /* ─────────────────────────────────────────────
-     Time Logic
-  ───────────────────────────────────────────── */
-
-  const DAY_NAMES_FULL = ['周日','周一','周二','周三','周四','周五','周六'];
-
-  function getCountdownSeconds() {
-    const now = new Date();
-    const dow = now.getDay();
-    const h   = now.getHours();
-
-    // Free time: Fri 18:00+ OR Sat OR Sun
-    if ((dow === 5 && h >= 18) || dow === 6 || dow === 0) {
-      return -1;
-    }
-
-    // Days until next Friday
-    const daysUntilFri = (dow === 5) ? 0 : (5 - dow + 7) % 7;
-
-    const target = new Date(now);
-    target.setDate(target.getDate() + daysUntilFri);
-    target.setHours(18, 0, 0, 0);
-
-    return Math.max(0, Math.floor((target - now) / 1000));
+  if (dayOfWeek < dow) {
+    // Past day
+    return { status: 'done', secsLeft: 0, progress: 100 };
   }
 
-  // Total work-week seconds: Mon 00:00 → Fri 18:00 = (4*24+18)*3600
-  const WEEK_TOTAL = (4 * 24 + 18) * 3600;
-
-  function getWeekProgress() {
-    const now = new Date();
-    const dow = now.getDay();
-    const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-
-    if (dow === 0 || dow === 6) return 100;
-    if (dow === 5 && h >= 18)   return 100;
-
-    const daysSinceMon = (dow === 0 ? 6 : dow - 1);
-    const elapsed = daysSinceMon * 86400 + h * 3600 + m * 60 + s;
-    return Math.min(100, (elapsed / WEEK_TOTAL) * 100);
+  if (dayOfWeek > dow) {
+    // Future day
+    return { status: 'future', secsLeft: DAY_WORK_SECS, progress: 0 };
   }
 
-  /* ─────────────────────────────────────────────
-     Render Loop
-  ───────────────────────────────────────────── */
+  // Today (dayOfWeek === dow)
+  const workStart = 9 * 3600;  // 09:00
+  const workEnd   = 18 * 3600; // 18:00
 
-  function pad2(n) { return String(n).padStart(2, '0'); }
+  if (todaySecs >= workEnd) {
+    return { status: 'done', secsLeft: 0, progress: 100 };
+  }
 
-  function render() {
-    const now  = new Date();
-    const dow  = now.getDay();
-    const secs = getCountdownSeconds();
+  if (todaySecs < workStart) {
+    // Before 9am - show as active but not started
+    return { status: 'active', secsLeft: DAY_WORK_SECS, progress: 0, notStarted: true };
+  }
 
-    document.getElementById('currentTime').textContent =
-      `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
-    document.getElementById('todayDay').textContent = DAY_NAMES_FULL[dow];
+  const elapsed = todaySecs - workStart;
+  const secsLeft = workEnd - todaySecs;
+  const progress = (elapsed / DAY_WORK_SECS) * 100;
+  return { status: 'active', secsLeft: Math.max(0, secsLeft), progress };
+}
 
-    if (secs === -1) {
-      setZeroState(true);
-      SLOT_IDS.forEach(id => setDigit(id, 0));
-      document.getElementById('statusDot').classList.add('off');
-      document.getElementById('statusText').textContent = '自由时间 · 享受周末';
-      document.getElementById('totalSecs').textContent = '000000';
-      document.getElementById('progressFill').style.width = '100%';
-      document.getElementById('progressPct').textContent = '100%';
-      document.getElementById('targetTime').textContent = '下周一重置';
+function formatDayCountdown(secsLeft, status) {
+  if (status === 'done') return '已下班 🎉';
+  if (status === 'future') return '09:00 开始';
+  const h = Math.floor(secsLeft / 3600);
+  const m = Math.floor((secsLeft % 3600) / 60);
+  const s = secsLeft % 60;
+  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+}
+
+/* ══════════════════════════════════════════════
+   BUILD SCHEDULE ROWS (once)
+══════════════════════════════════════════════ */
+const DAYS = [
+  { dow: 1, label: '周一', sub: 'MON' },
+  { dow: 2, label: '周二', sub: 'TUE' },
+  { dow: 3, label: '周三', sub: 'WED' },
+  { dow: 4, label: '周四', sub: 'THU' },
+  { dow: 5, label: '周五', sub: 'FRI' },
+];
+
+const scheduleList = document.getElementById('scheduleList');
+
+DAYS.forEach(d => {
+  const row = document.createElement('div');
+  row.className = 'day-row';
+  row.id = `day-row-${d.dow}`;
+  row.innerHTML = `
+    <div class="day-label">${d.label}<br><span style="font-family:'Share Tech Mono',monospace;font-size:clamp(7px,1.5vw,9px);letter-spacing:0.2em;color:var(--text-muted);font-weight:400">${d.sub}</span></div>
+    <div class="day-bar-wrap"><div class="day-bar-fill" id="bar-${d.dow}"></div></div>
+    <div class="day-countdown" id="cd-${d.dow}">--:--:--</div>
+    <div class="day-done-icon" id="icon-${d.dow}">🎉</div>
+  `;
+  scheduleList.appendChild(row);
+});
+
+/* ══════════════════════════════════════════════
+   FINAL 60s OVERLAY + PARTICLES
+══════════════════════════════════════════════ */
+const finalOverlay = document.getElementById('finalOverlay');
+const finalNumber  = document.getElementById('finalNumber');
+const canvas       = document.getElementById('particleCanvas');
+const ctx          = canvas.getContext('2d');
+let particles      = [];
+let animFrame      = null;
+let overlayActive  = false;
+
+function resizeCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = Math.random() * canvas.width;
+    this.y = init ? Math.random() * canvas.height : -10;
+    this.vx = (Math.random() - 0.5) * 3;
+    this.vy = Math.random() * 3 + 1;
+    this.size = Math.random() * 8 + 3;
+    this.color = ['#f5c518','#ff6b35','#fff','#00d4ff','#ff3cac'][Math.floor(Math.random()*5)];
+    this.alpha = 1;
+    this.rot = Math.random() * Math.PI * 2;
+    this.rotV = (Math.random() - 0.5) * 0.15;
+    this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+  }
+  update() {
+    this.x  += this.vx;
+    this.y  += this.vy;
+    this.rot += this.rotV;
+    this.vy += 0.04; // gravity
+    if (this.y > canvas.height + 20) this.reset(false);
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle   = this.color;
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    if (this.shape === 'rect') {
+      ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size * 0.5);
     } else {
-      setZeroState(false);
-
-      const days = Math.floor(secs / 86400);
-      const hrs  = Math.floor((secs % 86400) / 3600);
-      const mins = Math.floor((secs % 3600) / 60);
-      const sc   = secs % 60;
-
-      setDigit('d0', Math.floor(days / 10));
-      setDigit('d1', days % 10);
-      setDigit('h0', Math.floor(hrs / 10));
-      setDigit('h1', hrs % 10);
-      setDigit('m0', Math.floor(mins / 10));
-      setDigit('m1', mins % 10);
-      setDigit('s0', Math.floor(sc / 10));
-      setDigit('s1', sc % 10);
-
-      document.getElementById('statusDot').classList.remove('off');
-      document.getElementById('statusText').textContent = '倒计时进行中 · TO THE WEEKEND';
-      document.getElementById('totalSecs').textContent = String(secs).padStart(6, '0');
-
-      const pct = getWeekProgress();
-      document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
-      document.getElementById('progressPct').textContent = pct.toFixed(1) + '%';
-      document.getElementById('targetTime').textContent = '周五 18:00';
+      ctx.beginPath();
+      ctx.arc(0, 0, this.size/2, 0, Math.PI*2);
+      ctx.fill();
     }
+    ctx.restore();
+  }
+}
+
+function spawnParticles(n) {
+  for (let i = 0; i < n; i++) particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  animFrame = requestAnimationFrame(animateParticles);
+}
+
+function showFinalOverlay(secs) {
+  if (!overlayActive) {
+    overlayActive = true;
+    finalOverlay.classList.add('active');
+    spawnParticles(120);
+    animateParticles();
+  }
+  finalNumber.textContent = secs;
+}
+
+function hideFinalOverlay() {
+  if (overlayActive) {
+    overlayActive = false;
+    finalOverlay.classList.remove('active');
+    cancelAnimationFrame(animFrame);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = [];
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RENDER LOOP
+══════════════════════════════════════════════ */
+function pad2(n) { return String(n).padStart(2,'0'); }
+
+function render() {
+  const now  = new Date();
+  const dow  = now.getDay();
+  const secs = getCountdownSeconds();
+
+  document.getElementById('currentTime').textContent =
+    `${pad2(now.getHours())}:${pad2(now.getMinutes())}:${pad2(now.getSeconds())}`;
+  document.getElementById('todayDay').textContent = DAY_NAMES_FULL[dow];
+
+  // ── Final 60s overlay ──
+  if (secs >= 0 && secs <= 60) {
+    showFinalOverlay(secs);
+  } else {
+    hideFinalOverlay();
   }
 
-  // Init
-  SLOT_IDS.forEach(id => setDigit(id, 0));
-  setTimeout(() => {
-    render();
-    setInterval(render, 1000);
-  }, 300);
+  // ── Main clock ──
+  if (secs === -1) {
+    setZeroState(true);
+    SLOT_IDS.forEach(id => setDigit(id, 0));
+    document.getElementById('statusDot').classList.add('off');
+    document.getElementById('statusText').textContent = '自由时间 · 享受周末';
+    document.getElementById('totalSecs').textContent = '000000';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressPct').textContent = '100%';
+    document.getElementById('targetTime').textContent = '下周一重置';
+  } else {
+    setZeroState(false);
+    const days = Math.floor(secs / 86400);
+    const hrs  = Math.floor((secs % 86400) / 3600);
+    const mins = Math.floor((secs % 3600) / 60);
+    const sc   = secs % 60;
+    setDigit('d0', Math.floor(days/10)); setDigit('d1', days%10);
+    setDigit('h0', Math.floor(hrs/10));  setDigit('h1', hrs%10);
+    setDigit('m0', Math.floor(mins/10)); setDigit('m1', mins%10);
+    setDigit('s0', Math.floor(sc/10));   setDigit('s1', sc%10);
+    document.getElementById('statusDot').classList.remove('off');
+    document.getElementById('statusText').textContent = '倒计时进行中 · TO THE WEEKEND';
+    document.getElementById('totalSecs').textContent = String(secs).padStart(6,'0');
+    const pct = getWeekProgress();
+    document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
+    document.getElementById('progressPct').textContent = pct.toFixed(1) + '%';
+    document.getElementById('targetTime').textContent = '周五 18:00';
+  }
+
+  // ── Daily schedule rows ──
+  DAYS.forEach(d => {
+    const info = getDayInfo(d.dow);
+    const row  = document.getElementById(`day-row-${d.dow}`);
+    const bar  = document.getElementById(`bar-${d.dow}`);
+    const cd   = document.getElementById(`cd-${d.dow}`);
+
+    // Classes
+    row.classList.remove('done','active','future');
+    row.classList.add(info.status);
+
+    // Progress bar
+    bar.style.width = info.progress.toFixed(1) + '%';
+
+    // Countdown text
+    if (info.status === 'done') {
+      cd.textContent = '已下班';
+    } else if (info.status === 'future') {
+      cd.textContent = '未开始';
+    } else if (info.status === 'active' && info.notStarted) {
+      cd.textContent = '未开始';
+    } else {
+      const h = Math.floor(info.secsLeft / 3600);
+      const m = Math.floor((info.secsLeft % 3600) / 60);
+      const s = info.secsLeft % 60;
+      cd.textContent = `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+    }
+  });
+}
+
+// Init
+SLOT_IDS.forEach(id => setDigit(id, 0));
+setTimeout(() => {
+  render();
+  setInterval(render, 1000);
+}, 300);
 </script>
 </body>
 </html>
